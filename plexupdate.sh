@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Plex Linux Server download tool
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

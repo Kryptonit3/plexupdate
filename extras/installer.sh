@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ORIGIN_REPO="https://github.com/${GIT_OWNER:-mrworf}/plexupdate"
-FULL_PATH="/opt/plexupdate"
+FULL_PATH="/usr/local/share/plexupdate"
 CONFIGFILE="/etc/plexupdate.conf"
 CONFIGCRON="/etc/plexupdate.cron.conf"
 CRONWRAPPER="/etc/cron.daily/plexupdate"
 VERBOSE=yes #to be inherited by get-plex-token, do not save to config
+unameOut="$(uname -s)"
 
 # default options
 AUTOINSTALL=yes
@@ -42,6 +43,9 @@ check_distro() {
 	elif hash apt-get 2>/dev/null; then
 		DISTRO="debian"
 		DISTRO_INSTALL="apt-get install"
+	elif [ "$unameOut" == "FreeBSD" ]; then
+	        DISTRO="FreeBSD"
+		DISTRO_INSTALL="pkg install"
 	else
 		DISTRO="unknown"
 	fi
@@ -102,12 +106,12 @@ abort() {
 
 install_plexupdate() {
 	echo
-	read -e -p "Directory to install into: " -i "/opt/plexupdate" FULL_PATH
+	read -e -p "Directory to install into: " -i "/usr/local/share/plexupdate" FULL_PATH
 
 	while [[ "$FULL_PATH" == *"~"* ]]; do
 		echo "Using '~' in your path can cause problems, please type out the full path instead"
 		echo
-		read -e -p "Directory to install into: " -i "/opt/plexupdate" FULL_PATH
+		read -e -p "Directory to install into: " -i "/usr/local/share/plexupdate" FULL_PATH
 	done
 
 	if [ ! -d "$FULL_PATH" ]; then
